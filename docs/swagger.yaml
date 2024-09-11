@@ -1,0 +1,219 @@
+basePath: /
+definitions:
+  models.Booking:
+    properties:
+      end_time:
+        type: string
+      id:
+        type: integer
+      start_time:
+        type: string
+      user_id:
+        type: integer
+    required:
+    - end_time
+    - start_time
+    - user_id
+    type: object
+  models.ErrorResponse:
+    properties:
+      code:
+        type: integer
+      message:
+        type: string
+    type: object
+  models.User:
+    properties:
+      created_at:
+        type: string
+      id:
+        type: integer
+      password:
+        minLength: 8
+        type: string
+      updated_at:
+        type: string
+      username:
+        maxLength: 50
+        minLength: 3
+        type: string
+    required:
+    - password
+    - username
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server for a booking service API.
+  title: Booking Service API
+  version: "1.0"
+paths:
+  /booking:
+    post:
+      consumes:
+      - application/json
+      description: Create a new booking for a user, validating the data and saving
+        it to the database.
+      parameters:
+      - description: Booking data
+        in: body
+        name: booking
+        required: true
+        schema:
+          $ref: '#/definitions/models.Booking'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/models.Booking'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/models.ErrorResponse'
+      summary: Create a new booking
+      tags:
+      - booking
+  /booking/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing booking using its ID.
+      parameters:
+      - description: Booking ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid ID supplied
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: Booking not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a booking by ID
+      tags:
+      - bookings
+  /bookings:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of all bookings.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: List of bookings
+          schema:
+            items:
+              $ref: '#/definitions/models.Booking'
+            type: array
+        "204":
+          description: No content
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Get all bookings
+      tags:
+      - bookings
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided details.
+      parameters:
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/models.User'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Successfully created user
+          schema:
+            $ref: '#/definitions/models.User'
+        "400":
+          description: Invalid input
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Create a new user
+      tags:
+      - users
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an existing user using their ID.
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: Successfully deleted
+          schema:
+            type: string
+        "400":
+          description: Invalid ID supplied
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "404":
+          description: User not found
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "500":
+          description: Internal server error
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+      summary: Delete a user by ID
+      tags:
+      - users
+swagger: "2.0"

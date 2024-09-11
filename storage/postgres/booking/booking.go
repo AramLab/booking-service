@@ -8,14 +8,18 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+// BookingRepository представляет собой структуру для работы с сущностью бронирования в базе данных.
 type BookingRepository struct {
 	db *pgxpool.Pool
 }
 
+// NewBookingRepository создаёт новый репозиторий для работы с бронированиями, принимая пул соединений с базой данных.
 func NewBookingRepository(db *pgxpool.Pool) *BookingRepository {
 	return &BookingRepository{db: db}
 }
 
+// Save сохраняет новую запись о бронировании в базу данных.
+// При успешном добавлении возвращает ID нового бронирования.
 func (br *BookingRepository) Save(booking *models.Booking) error {
 	err := br.db.QueryRow(context.Background(),
 		"INSERT INTO booking (user_id, start_time, end_time) VALUES ($1, $2, $3) RETURNING id",
@@ -26,6 +30,7 @@ func (br *BookingRepository) Save(booking *models.Booking) error {
 	return nil
 }
 
+// DeleteById удаляет запись о бронировании по его ID.
 func (br *BookingRepository) DeleteById(id string) error {
 	_, err := br.db.Exec(context.Background(), "DELETE FROM booking WHERE id=$1", id)
 	if err != nil {
@@ -34,6 +39,7 @@ func (br *BookingRepository) DeleteById(id string) error {
 	return nil
 }
 
+// FindAll возвращает список всех бронирований из базы данных.
 func (br *BookingRepository) FindAll() ([]models.Booking, error) {
 	rows, err := br.db.Query(context.Background(), "SELECT id, user_id, start_time, end_time FROM booking")
 	if err != nil {
@@ -53,6 +59,7 @@ func (br *BookingRepository) FindAll() ([]models.Booking, error) {
 	return bookings, nil
 }
 
+// FindById ищет запись о бронировании по его ID.
 func (br *BookingRepository) FindById(id string) (models.Booking, error) {
 	var booking models.Booking
 	row := br.db.QueryRow(context.Background(), "SELECT id, user_id, start_time, end_time FROM booking WHERE id=$1", id)

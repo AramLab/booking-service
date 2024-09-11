@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+// Config содержит параметры конфигурации для подключения к базе данных PostgreSQL.
 type Config struct {
 	Host     string
 	Port     string
@@ -16,6 +17,7 @@ type Config struct {
 	SSLMode  string
 }
 
+// ConnectDB устанавливает соединение с базой данных PostgreSQL и возвращает пул соединений.
 func ConnectDB(ctx context.Context, config *Config) (*pgxpool.Pool, error) {
 	connString := fmt.Sprintf(
 		"postgres://%s:%s@%s:%s/%s?sslmode=%s",

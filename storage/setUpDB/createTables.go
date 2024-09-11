@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v4/pgxpool"
 )
 
+// CreateTables создает таблицы в базе данных, если они еще не существуют.
 func CreateTables(db *pgxpool.Pool) error {
 	ctx := context.Background()
 

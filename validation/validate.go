@@ -7,12 +7,15 @@ import (
 	"github.com/go-playground/validator/v10"
 )
 
+// validate - глобальная переменная для экземпляра валидатора.
 var validate *validator.Validate
 
+// init инициализирует экземпляр валидатора при запуске пакета.
 func init() {
 	validate = validator.New()
 }
 
+// ValidateUser проверяет корректность данных пользователя с помощью валидатора.
 func ValidateUser(user models.User) error {
 	err := validate.Struct(user)
 	if err != nil {
@@ -21,6 +24,7 @@ func ValidateUser(user models.User) error {
 	return nil
 }
 
+// ValidateBooking проверяет корректность данных бронирования с помощью валидатора.
 func ValidateBooking(booking models.Booking) error {
 	err := validate.Struct(booking)
 	if err != nil {

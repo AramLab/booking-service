@@ -6,6 +6,7 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// User представляет пользователя в системе.
 type User struct {
 	ID         int       `json:"id"`
 	Username   string    `json:"username" validate:"required,min=3,max=50,alphanum"`
@@ -15,7 +16,8 @@ type User struct {
 }
 
 // HashPassword
-// Хеширует пароль и возвращает ошибку в случае её возникновения или же nil.
+// Хеширует пароль и устанавливает его в поле Password.
+// Возвращает ошибку, если произошла ошибка при хешировании.
 func (u *User) HashPassword(password string) error {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
@@ -26,7 +28,8 @@ func (u *User) HashPassword(password string) error {
 }
 
 // CheckPassword
-// Проверяет корректность введённого пароля и возвращает ошибку в случае её возникновения или же nil.
+// Проверяет введённый пароль, сравнивая его с хешированным паролем.
+// Возвращает ошибку, если пароли не совпадают.
 func (u *User) CheckPassword(password string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(u.Password), []byte(password))
 	if err != nil {

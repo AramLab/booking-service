@@ -2,6 +2,7 @@ package models
 
 import "time"
 
+// Booking представляет информацию о бронировании.
 type Booking struct {
 	ID         int       `json:"id"`
 	User_id    int       `json:"user_id" validate:"required"`
