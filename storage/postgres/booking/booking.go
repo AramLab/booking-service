@@ -17,8 +17,9 @@ func NewBookingRepository(db *pgxpool.Pool) *BookingRepository {
 }
 
 func (br *BookingRepository) Save(booking *models.Booking) error {
-	_, err := br.db.Exec(context.Background(), "INSERT INTO booking (user_id, start_time, end_time) VALUES ($1, $2, $3)",
-		booking.User_id, booking.Start_time, booking.End_time)
+	err := br.db.QueryRow(context.Background(),
+		"INSERT INTO booking (user_id, start_time, end_time) VALUES ($1, $2, $3) RETURNING id",
+		booking.User_id, booking.Start_time, booking.End_time).Scan(&booking.ID)
 	if err != nil {
 		return errors.New(`{"error":"failed to add booking"}`)
 	}
@@ -34,7 +35,7 @@ func (br *BookingRepository) DeleteById(id string) error {
 }
 
 func (br *BookingRepository) FindAll() ([]models.Booking, error) {
-	rows, err := br.db.Query(context.Background(), "SELECT id, user_id, start_time, end_time FROM bookings")
+	rows, err := br.db.Query(context.Background(), "SELECT id, user_id, start_time, end_time FROM booking")
 	if err != nil {
 		return []models.Booking{}, errors.New(`{"error":"failed to find all bookings"}`)
 	}

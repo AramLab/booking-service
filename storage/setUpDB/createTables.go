@@ -11,7 +11,7 @@ func CreateTables(db *pgxpool.Pool) error {
 	ctx := context.Background()
 
 	userTable := `
-	CREATE TABLE IF NOT EXISTS user (
+	CREATE TABLE IF NOT EXISTS "user" (
 		id SERIAL PRIMARY KEY,
 		username VARCHAR(100) NOT NULL,
 		password VARCHAR(250) NOT NULL,
@@ -19,9 +19,9 @@ func CreateTables(db *pgxpool.Pool) error {
 		updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 	);`
 
-	bookingTable := `CREATe TABLE IF NOT EXISTS booking (
+	bookingTable := `CREATE TABLE IF NOT EXISTS booking (
 		id SERIAL PRIMARY KEY,
-		user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+		user_id INT NOT NULL REFERENCES "user"(id) ON DELETE CASCADE,
 		start_time TIMESTAMPTZ NOT NULL,
 		end_time TIMESTAMPTZ NOT NULL
 	);`

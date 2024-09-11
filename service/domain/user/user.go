@@ -16,14 +16,6 @@ func NewUserService(UserRepository storage.UserRepository) *UserService {
 }
 
 func (us *UserService) Create(user *models.User) error {
-	/*err := user.HashPassword(user.Password)
-	if err != nil {
-		return errors.New(`{"error":"error hashing password"}`)
-	}
-
-	user.Created_at = time.Now()
-	user.Updated_at = time.Now()*/
-
 	err := us.UserRepository.Save(user)
 	if err != nil {
 		return errors.New(`{"error":"error of creating user"}`)

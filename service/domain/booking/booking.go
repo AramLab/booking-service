@@ -16,9 +16,6 @@ func NewBookingService(BookingRepository storage.BookingRepository) *BookingServ
 }
 
 func (bs *BookingService) Create(booking *models.Booking) error {
-	//booking.Start_time = booking.Start_time
-	//booking.End_time = booking.Start_time.Add(1 * time.Hour)
-
 	err := bs.BookingRepository.Save(booking)
 	if err != nil {
 		return errors.New(`{"error":"error of creating booking"}`)
@@ -51,7 +48,6 @@ func (bs *BookingService) Get(id string) (models.Booking, error) {
 }
 
 func (bs *BookingService) GetAll() ([]models.Booking, error) {
-	var bookings []models.Booking
 	bookings, err := bs.BookingRepository.FindAll()
 	if err != nil {
 		return []models.Booking{}, errors.New(`{"error":"error get all bookings"}`)

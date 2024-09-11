@@ -8,8 +8,8 @@ import (
 
 type User struct {
 	ID         int       `json:"id"`
-	Username   string    `json:"username"`
-	Password   string    `json:"-"`
+	Username   string    `json:"username" validate:"required,min=3,max=50,alphanum"`
+	Password   string    `json:"password" validate:"required,min=8"`
 	Created_at time.Time `json:"created_at"`
 	Updated_at time.Time `json:"updated_at"`
 }

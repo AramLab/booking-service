@@ -34,6 +34,11 @@ func main() {
 	}
 	defer db.Close()
 
+	err = setUpDB.CreateTables(db)
+	if err != nil {
+		log.Fatalf("error creating tables: %v", err)
+	}
+
 	repository := postgres.NewRepository(db)
 	service := domain.NewService(repository)
 
