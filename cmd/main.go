@@ -62,10 +62,8 @@ func main() {
 	r := routes.RegisterRoutes(service.UserServ, service.BookingServ)
 
 	// Swagger UI
-	r.PathPrefix("/swagger/").Handler(httpSwagger.Handler(
-		httpSwagger.URL("/swagger/doc.json"), // URL pointing to API definition
-		httpSwagger.DeepLinking(true),        // Deep linking for documentation
-	))
+	// http://localhost:8080/swagger/index.html
+	r.PathPrefix("/swagger/").Handler(httpSwagger.WrapHandler)
 
 	port := os.Getenv("DB_SERVER_PORT")
 
