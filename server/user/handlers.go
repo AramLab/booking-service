@@ -47,7 +47,7 @@ func (h *UserHandlers) CreateUser(w http.ResponseWriter, r *http.Request) {
 	// Валидируем пользователя.
 	err = validation.ValidateUser(newUser)
 	if err != nil {
-		http.Error(w, err.Error(), http.StatusBadRequest)
+		http.Error(w, `{"error":"error of validation"}`, http.StatusBadRequest)
 		return
 	}
 
@@ -57,9 +57,6 @@ func (h *UserHandlers) CreateUser(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, `{"error":"error hashing password"}`, http.StatusInternalServerError)
 		return
 	}
-
-	//newUser.Created_at = time.Now()
-	//newUser.Updated_at = time.Now()
 
 	// Создаем нового пользователя с помощью UserService.
 	err = h.UserService.Create(&newUser)
@@ -110,9 +107,14 @@ func (h *UserHandlers) DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Ищем пользователя в базе данных по его ID.
-	_, err := h.UserService.Get(id)
+	user, err := h.UserService.Get(id)
 	if err != nil {
 		http.Error(w, `{"error":"user is not found"}`, http.StatusNotFound)
+		return
+	}
+
+	if user == nil {
+		http.Error(w, "User not found", http.StatusNotFound)
 		return
 	}
 

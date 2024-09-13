@@ -49,12 +49,12 @@ func (us *UserService) Delete(id string) error {
 
 // Get возвращает пользователя по указанному идентификатору, используя метод FindById репозитория.
 // В случае ошибки возвращает пустого пользователя и ошибку.
-func (us *UserService) Get(id string) (models.User, error) {
+func (us *UserService) Get(id string) (*models.User, error) {
 	user, err := us.UserRepository.FindById(id)
 	if err != nil {
-		return models.User{}, errors.New(`{"error":"error to get user"}`)
+		return &models.User{}, errors.New(`{"error":"error to get user"}`)
 	}
-	return user, nil
+	return &user, nil
 }
 
 // GetAll возвращает всех существующих пользователей, используя метод FindAll репозитория.

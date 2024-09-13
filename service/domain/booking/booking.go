@@ -49,12 +49,12 @@ func (bs *BookingService) Delete(id string) error {
 
 // Get возвращает бронирование по указанному идентификатору, используя метод FindById репозитория.
 // В случае ошибки возвращает пустое бронирование и ошибку.
-func (bs *BookingService) Get(id string) (models.Booking, error) {
-	user, err := bs.BookingRepository.FindById(id)
+func (bs *BookingService) Get(id string) (*models.Booking, error) {
+	booking, err := bs.BookingRepository.FindById(id)
 	if err != nil {
-		return models.Booking{}, errors.New(`{"error":"error to get booking"}`)
+		return &models.Booking{}, errors.New(`{"error":"error to get booking"}`)
 	}
-	return user, nil
+	return &booking, nil
 }
 
 // GetAll возвращает все существующие бронирования, используя метод FindAll репозитория.
